@@ -23,69 +23,8 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-
-const ModalView = () => {
-  const insets = useSafeAreaInsets();
-  const [modalVisible, setModalVisible] = useState(true);
-
-  return (
-    <Modal
-      animationType="slide"
-      transparent
-      visible={modalVisible}
-      onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-        setModalVisible(!modalVisible);
-      }}>
-      <View style={styles.centeredView}>
-        <View style={[styles.closeContainer, {marginTop: insets.top}]}>
-          <Image
-            style={{backgroundColor: 'green'}}
-            source={require('./close.jpg')}
-          />
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            width: '100%',
-            paddingLeft: 20,
-          }}>
-          <Text
-            style={{
-              fontSize: 30,
-              fontWeight: 'bold',
-              fontFamily: 'Avenir',
-            }}>
-            Explore the new login flow
-          </Text>
-        </View>
-        <View style={{height: 12}} />
-        <View style={{height: 1, width: '100%', backgroundColor: '#F0F2F6'}} />
-        <View style={{height: 12}} />
-        <Image
-          style={{backgroundColor: 'green'}}
-          source={require('./biometric.jpg')}
-        />
-        <View style={{height: 24}} />
-        <View style={{paddingHorizontal: 12}}>
-          <Text style={{fontSize: 18, lineHeight: 24, fontFamily: 'Avenir'}}>
-            We've made it easier for you to login to aatlas through biometrics
-            and passwordless login. Now you can safely login without the hassle
-            of remembering your password
-          </Text>
-        </View>
-        <View style={{height: 30}} />
-        <Pressable
-          style={[styles.button, styles.buttonClose]}
-          onPress={() => setModalVisible(!modalVisible)}>
-          <Text style={styles.textStyle}>Got it</Text>
-        </Pressable>
-      </View>
-    </Modal>
-  );
-};
+import {ConfigProvider} from './src/service/useService';
+import Visibility from './src/service/Visibility';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -99,13 +38,16 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaProvider>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ModalView />
-    </SafeAreaProvider>
+    <ConfigProvider>
+      <SafeAreaProvider>
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          backgroundColor={backgroundStyle.backgroundColor}
+        />
+        {/* <ModalView /> */}
+        <Visibility />
+      </SafeAreaProvider>
+    </ConfigProvider>
   );
 }
 
