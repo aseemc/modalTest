@@ -25,7 +25,7 @@ export const useConfigService = () => {
 
 export const ConfigProvider = ({appId, apiKey, children}) => {
   const [appConfig, setAppConfig] = useState();
-  const [showVisibilityView, setShowVisibilityView] = useState(false);
+  const [showVisibilityView, toggleVisibilityView] = useState(false);
   const appState = useRef(AppState.currentState);
 
   const getAppConfig = useCallback(async () => {
@@ -67,8 +67,10 @@ export const ConfigProvider = ({appId, apiKey, children}) => {
   const values = useMemo(
     () => ({
       appConfig,
+      showVisibilityView,
+      toggleVisibilityView,
     }),
-    [appConfig],
+    [appConfig, showVisibilityView, toggleVisibilityView],
   );
 
   return (

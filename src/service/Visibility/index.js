@@ -4,7 +4,7 @@ import {useConfigService} from '../useService';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ModalView from './ModalView';
 
-const Visibility = () => {
+const Visibility = props => {
   const {appConfig} = useConfigService();
 
   console.log('=>>>> app: ', appConfig);
@@ -15,7 +15,7 @@ const Visibility = () => {
     //     <Text>Hello world</Text>
     //   </View>
     // </SafeAreaView>
-    <ModalView />
+    <ModalView {...props} />
   );
 };
 

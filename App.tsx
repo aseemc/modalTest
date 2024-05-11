@@ -17,6 +17,7 @@ import {
   Pressable,
   Alert,
   Image,
+  Button,
 } from 'react-native';
 import {
   SafeAreaProvider,
@@ -28,6 +29,7 @@ import Visibility from './src/service/Visibility';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [showVis, setShowVis] = useState(false);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -44,8 +46,17 @@ function App(): React.JSX.Element {
           barStyle={isDarkMode ? 'light-content' : 'dark-content'}
           backgroundColor={backgroundStyle.backgroundColor}
         />
-        {/* <ModalView /> */}
-        <Visibility />
+
+        <View
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+          }}>
+          <Button onPress={() => setShowVis(vis => !vis)} title="Show modal" />
+        </View>
+        <Visibility visible={showVis} setVisible={setShowVis} />
       </SafeAreaProvider>
     </ConfigProvider>
   );

@@ -12,18 +12,17 @@ import {
 } from 'react-native';
 import {normalizeFont} from '../fontsHelper';
 
-const ModalView = () => {
+const Visibility = ({visible, setVisible}) => {
   const insets = useSafeAreaInsets();
-  const [modalVisible, setModalVisible] = useState(true);
-  console.log('=>>>>>> ', insets);
+
   return (
     <Modal
       animationType="slide"
       transparent
-      visible={modalVisible}
+      visible={visible}
       onRequestClose={() => {
         Alert.alert('Modal has been closed.');
-        setModalVisible(!modalVisible);
+        setVisible(!visible);
       }}>
       <View
         style={[
@@ -45,9 +44,7 @@ const ModalView = () => {
         </ScrollView>
         <View style={{height: 12}} />
         <View style={styles.buttonsContainer}>
-          <Pressable
-            style={styles.button}
-            onPress={() => setModalVisible(!modalVisible)}>
+          <Pressable style={styles.button} onPress={() => setVisible(!visible)}>
             <Text style={styles.buttonText}>Got it</Text>
           </Pressable>
         </View>
@@ -106,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalView;
+export default Visibility;
