@@ -14,6 +14,7 @@ import {
 import {normalizeFont} from '../fontsHelper';
 import Carousel from 'react-native-reanimated-carousel';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
+import Button from '../components/Button';
 
 const Visibility = ({visible, setVisible}) => {
   const insets = useSafeAreaInsets();
@@ -53,29 +54,15 @@ const Visibility = ({visible, setVisible}) => {
       <View style={{height: 12}} />
       <Image source={require('./biometric.jpg')} />
       <View style={{height: 12}} />
-      <ScrollView contentContainerStyle={{flex: 1}}>
+      <ScrollView>
         <Text style={styles.description}>{body}</Text>
       </ScrollView>
       <View style={{height: 12}} />
     </View>
   );
 
-  const buttonTitle = () => {
-    if (data.length === 1 || selectedIndex === data.length - 1) {
-      return 'Done';
-    }
-    return 'Continue';
-  };
-
   return (
-    <Modal
-      animationType="slide"
-      transparent
-      visible={visible}
-      onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-        setVisible(!visible);
-      }}>
+    <Modal animationType="slide" transparent visible={visible}>
       <View
         style={[
           styles.centeredView,
@@ -92,13 +79,7 @@ const Visibility = ({visible, setVisible}) => {
           onSnapToItem={setSelectedIndex}
           renderItem={renderItem}
         />
-        <View
-          style={{
-            height: 12,
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+        <View style={styles.paginationContainer}>
           <AnimatedDotsCarousel
             length={data.length}
             currentIndex={selectedIndex}
@@ -130,8 +111,8 @@ const Visibility = ({visible, setVisible}) => {
         </View>
         <View style={{height: 8}} />
         <View style={styles.buttonsContainer}>
-          <Pressable
-            style={styles.button}
+          <Button
+            containerStyle={styles.button}
             onPress={() => {
               if (selectedIndex === data.length - 1) {
                 setSelectedIndex(0);
@@ -145,7 +126,7 @@ const Visibility = ({visible, setVisible}) => {
                 ? 'Done'
                 : 'Continue'}
             </Text>
-          </Pressable>
+          </Button>
         </View>
       </View>
     </Modal>
@@ -200,6 +181,12 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  paginationContainer: {
+    height: 12,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
