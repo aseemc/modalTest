@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {normalizeFont} from '../fontsHelper';
 import Carousel from 'react-native-reanimated-carousel';
+import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 
 const Visibility = ({visible, setVisible}) => {
   const insets = useSafeAreaInsets();
@@ -91,6 +92,43 @@ const Visibility = ({visible, setVisible}) => {
           onSnapToItem={setSelectedIndex}
           renderItem={renderItem}
         />
+        <View
+          style={{
+            height: 12,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <AnimatedDotsCarousel
+            length={data.length}
+            currentIndex={selectedIndex}
+            maxIndicators={6}
+            interpolateOpacityAndColor={true}
+            activeIndicatorConfig={{
+              color: 'black',
+              margin: 3,
+              opacity: 1,
+              size: 8,
+            }}
+            inactiveIndicatorConfig={{
+              color: 'grey',
+              margin: 3,
+              opacity: 0.5,
+              size: 8,
+            }}
+            decreasingDots={[
+              {
+                config: {color: 'grey', margin: 3, opacity: 0.5, size: 6},
+                quantity: 1,
+              },
+              {
+                config: {color: 'grey', margin: 3, opacity: 0.5, size: 4},
+                quantity: 1,
+              },
+            ]}
+          />
+        </View>
+        <View style={{height: 8}} />
         <View style={styles.buttonsContainer}>
           <Pressable
             style={styles.button}
@@ -135,6 +173,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: normalizeFont(16),
     fontFamily: 'Avenir',
+    flexWrap: 'wrap',
   },
   buttonsContainer: {
     width: '100%',
