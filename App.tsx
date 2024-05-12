@@ -24,6 +24,7 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {ConfigProvider} from './src/service/useService';
 import Visibility from './src/service/Visibility';
 
@@ -40,25 +41,30 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <ConfigProvider>
-      <SafeAreaProvider>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
+    <GestureHandlerRootView style={{flex: 1}}>
+      <ConfigProvider>
+        <SafeAreaProvider>
+          <StatusBar
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
 
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-          }}>
-          <Button onPress={() => setShowVis(vis => !vis)} title="Show modal" />
-        </View>
-        <Visibility visible={showVis} setVisible={setShowVis} />
-      </SafeAreaProvider>
-    </ConfigProvider>
+          <View
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1,
+            }}>
+            <Button
+              onPress={() => setShowVis(vis => !vis)}
+              title="Show modal"
+            />
+          </View>
+          <Visibility visible={showVis} setVisible={setShowVis} />
+        </SafeAreaProvider>
+      </ConfigProvider>
+    </GestureHandlerRootView>
   );
 }
 

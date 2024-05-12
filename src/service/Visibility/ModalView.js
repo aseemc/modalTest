@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   View,
@@ -9,11 +9,62 @@ import {
   Modal,
   Text,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import {normalizeFont} from '../fontsHelper';
+import Carousel from 'react-native-reanimated-carousel';
 
 const Visibility = ({visible, setVisible}) => {
   const insets = useSafeAreaInsets();
+  const carouselRef = useRef();
+  const width = Dimensions.get('window').width;
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const data = [
+    {
+      title: '1Explore the new login flow',
+      image: '',
+      body: "We've made it easier for you to login to aatlas through biometrics and passwordless login. Now you can safely login without the hassle of remembering your password.",
+    },
+    {
+      title: '2Explore the new login flow',
+      image: '',
+      body: "We've made it easier for you to login to aatlas through biometrics and passwordless login. Now you can safely login without the hassle of remembering your password.",
+    },
+    {
+      title: '3Explore the new login flow',
+      image: '',
+      body: "We've made it easier for you to login to aatlas through biometrics and passwordless login. Now you can safely login without the hassle of remembering your password.",
+    },
+    {
+      title: '4Explore the new login flow',
+      image: '',
+      body: "We've made it easier for you to login to aatlas through biometrics and passwordless login. Now you can safely login without the hassle of remembering your password.",
+    },
+  ];
+
+  console.log('=>>>sfasdfasdfas: ', selectedIndex);
+
+  const renderItem = ({item: {title, image, body}}) => (
+    <View style={[styles.centeredView]}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>{title}</Text>
+      </View>
+      <View style={{height: 12}} />
+      <Image source={require('./biometric.jpg')} />
+      <View style={{height: 12}} />
+      <ScrollView contentContainerStyle={{flex: 1}}>
+        <Text style={styles.description}>{body}</Text>
+      </ScrollView>
+      <View style={{height: 12}} />
+    </View>
+  );
+
+  const buttonTitle = () => {
+    if (data.length === 1 || selectedIndex === data.length - 1) {
+      return 'Done';
+    }
+    return 'Continue';
+  };
 
   return (
     <Modal
@@ -27,25 +78,35 @@ const Visibility = ({visible, setVisible}) => {
       <View
         style={[
           styles.centeredView,
-          {marginBottom: insets.bottom || 12, marginTop: insets.top + 20},
+          {
+            marginBottom: insets.bottom || 12,
+            marginTop: insets.top + 20,
+          },
         ]}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Explore the new login flow</Text>
-        </View>
-        <View style={{height: 12}} />
-        <Image source={require('./biometric.jpg')} />
-        <View style={{height: 12}} />
-        <ScrollView contentContainerStyle={{flex: 1}}>
-          <Text style={styles.description}>
-            We've made it easier for you to login to aatlas through biometrics
-            and passwordless login. Now you can safely login without the hassle
-            of remembering your password.
-          </Text>
-        </ScrollView>
-        <View style={{height: 12}} />
+        <Carousel
+          ref={carouselRef}
+          loop={false}
+          width={width}
+          data={data}
+          onSnapToItem={setSelectedIndex}
+          renderItem={renderItem}
+        />
         <View style={styles.buttonsContainer}>
-          <Pressable style={styles.button} onPress={() => setVisible(!visible)}>
-            <Text style={styles.buttonText}>Got it</Text>
+          <Pressable
+            style={styles.button}
+            onPress={() => {
+              if (selectedIndex === data.length - 1) {
+                setSelectedIndex(0);
+                setVisible(!visible);
+              } else {
+                carouselRef?.current?.next?.();
+              }
+            }}>
+            <Text style={styles.buttonText}>
+              {carouselRef.current?.getCurrentIndex?.() === data.length - 1
+                ? 'Done'
+                : 'Continue'}
+            </Text>
           </Pressable>
         </View>
       </View>

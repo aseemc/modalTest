@@ -34,7 +34,7 @@ export const ConfigProvider = ({appId, apiKey, children}) => {
         'https://jsonplaceholder.typicode.com/todos/1',
       );
       const json = await response.json();
-      console.log('=>>>XXXXX: ', json);
+      // console.log('=>>>XXXXX: ', json);
       if (!isEqual(json, appConfig)) {
         setAppConfig(json);
       }
