@@ -26,7 +26,7 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {ConfigProvider} from './src/service/useService';
-import Visibility from './src/service/Visibility';
+import InAppGuide from './src/service/InAppGuide';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -61,7 +61,7 @@ function App(): React.JSX.Element {
               title="Show modal"
             />
           </View>
-          <Visibility visible={showVis} setVisible={setShowVis} />
+          <InAppGuide visible={showVis} setVisible={setShowVis} />
         </SafeAreaProvider>
       </ConfigProvider>
     </GestureHandlerRootView>

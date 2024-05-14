@@ -16,46 +16,40 @@ import Carousel from 'react-native-reanimated-carousel';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 import Button from '../components/Button';
 
-const Visibility = ({visible, setVisible}) => {
+const ModalView = ({appConfig, visible, setVisible}) => {
   const insets = useSafeAreaInsets();
   const carouselRef = useRef();
   const width = Dimensions.get('window').width;
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const data = [
-    {
-      title: '1Explore the new login flow',
-      image: '',
-      body: "We've made it easier for you to login to aatlas through biometrics and passwordless login. Now you can safely login without the hassle of remembering your password.",
-    },
-    {
-      title: '2Explore the new login flow',
-      image: '',
-      body: "We've made it easier for you to login to aatlas through biometrics and passwordless login. Now you can safely login without the hassle of remembering your password.",
-    },
-    {
-      title: '3Explore the new login flow',
-      image: '',
-      body: "We've made it easier for you to login to aatlas through biometrics and passwordless login. Now you can safely login without the hassle of remembering your password.",
-    },
-    {
-      title: '4Explore the new login flow',
-      image: '',
-      body: "We've made it easier for you to login to aatlas through biometrics and passwordless login. Now you can safely login without the hassle of remembering your password.",
-    },
-  ];
+  const {
+    data,
+    backgroundColor,
+    titleColor,
+    descriptionColor,
+    buttonBackgroundColor,
+    buttonTextColor,
+    paginationActiveColor,
+    paginationInactiveColor,
+  } = appConfig;
 
   console.log('=>>>sfasdfasdfas: ', selectedIndex);
 
   const renderItem = ({item: {title, image, body}}) => (
     <View style={[styles.centeredView]}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>{title}</Text>
+        <Text style={[styles.headerText, {color: titleColor}]}>{title}</Text>
       </View>
       <View style={{height: 12}} />
-      <Image source={require('./biometric.jpg')} />
+      <Image
+        style={{width: width - 60, height: width - 60, borderRadius: 10}}
+        source={{uri: image}}
+        resizeMode="cover"
+      />
       <View style={{height: 12}} />
       <ScrollView>
-        <Text style={styles.description}>{body}</Text>
+        <Text style={[styles.description, {color: descriptionColor}]}>
+          {body}
+        </Text>
       </ScrollView>
       <View style={{height: 12}} />
     </View>
@@ -67,8 +61,9 @@ const Visibility = ({visible, setVisible}) => {
         style={[
           styles.centeredView,
           {
-            marginBottom: insets.bottom || 12,
-            marginTop: insets.top + 20,
+            paddingBottom: insets.bottom || 12,
+            paddingTop: insets.top + 20,
+            backgroundColor,
           },
         ]}>
         <Carousel
@@ -86,13 +81,13 @@ const Visibility = ({visible, setVisible}) => {
             maxIndicators={6}
             interpolateOpacityAndColor={true}
             activeIndicatorConfig={{
-              color: 'black',
+              color: paginationActiveColor,
               margin: 3,
               opacity: 1,
               size: 8,
             }}
             inactiveIndicatorConfig={{
-              color: 'grey',
+              color: paginationInactiveColor,
               margin: 3,
               opacity: 0.5,
               size: 8,
@@ -112,7 +107,10 @@ const Visibility = ({visible, setVisible}) => {
         <View style={{height: 8}} />
         <View style={styles.buttonsContainer}>
           <Button
-            containerStyle={styles.button}
+            containerStyle={[
+              styles.button,
+              {backgroundColor: buttonBackgroundColor},
+            ]}
             onPress={() => {
               if (selectedIndex === data.length - 1) {
                 setSelectedIndex(0);
@@ -121,7 +119,7 @@ const Visibility = ({visible, setVisible}) => {
                 carouselRef?.current?.next?.();
               }
             }}>
-            <Text style={styles.buttonText}>
+            <Text style={[styles.buttonText, {color: buttonTextColor}]}>
               {carouselRef.current?.getCurrentIndex?.() === data.length - 1
                 ? 'Done'
                 : 'Continue'}
@@ -137,7 +135,6 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'white',
     paddingHorizontal: 20,
   },
   header: {
@@ -190,4 +187,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Visibility;
+export default ModalView;
