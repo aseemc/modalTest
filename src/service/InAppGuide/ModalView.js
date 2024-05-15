@@ -22,20 +22,29 @@ const ModalView = ({appConfig, visible, setVisible}) => {
   const width = Dimensions.get('window').width;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const {
-    data,
-    backgroundColor,
-    titleColor,
-    descriptionColor,
-    buttonBackgroundColor,
-    buttonTextColor,
-    paginationActiveColor,
-    paginationInactiveColor,
+    inAppGuide: {
+      data,
+      backgroundColor,
+      titleColor,
+      descriptionColor,
+      buttonBackgroundColor,
+      buttonTextColor,
+      paginationActiveColor,
+      paginationInactiveColor,
+    },
   } = appConfig;
 
   console.log('=>>>sfasdfasdfas: ', selectedIndex);
 
   const renderItem = ({item: {title, image, body}}) => (
-    <View style={[styles.centeredView]}>
+    <View
+      style={[
+        styles.centeredView,
+        {
+          paddingTop: insets.top + 20,
+          ...(backgroundColor ? {backgroundColor} : undefined),
+        },
+      ]}>
       <View style={styles.header}>
         <Text style={[styles.headerText, {color: titleColor}]}>{title}</Text>
       </View>
@@ -62,8 +71,7 @@ const ModalView = ({appConfig, visible, setVisible}) => {
           styles.centeredView,
           {
             paddingBottom: insets.bottom || 12,
-            paddingTop: insets.top + 20,
-            backgroundColor,
+            ...(backgroundColor ? {backgroundColor} : undefined),
           },
         ]}>
         <Carousel
@@ -74,7 +82,11 @@ const ModalView = ({appConfig, visible, setVisible}) => {
           onSnapToItem={setSelectedIndex}
           renderItem={renderItem}
         />
-        <View style={styles.paginationContainer}>
+        <View
+          style={[
+            styles.paginationContainer,
+            backgroundColor ? {backgroundColor} : undefined,
+          ]}>
           <AnimatedDotsCarousel
             length={data.length}
             currentIndex={selectedIndex}
@@ -109,7 +121,9 @@ const ModalView = ({appConfig, visible, setVisible}) => {
           <Button
             containerStyle={[
               styles.button,
-              {backgroundColor: buttonBackgroundColor},
+              buttonBackgroundColor
+                ? {backgroundColor: buttonBackgroundColor}
+                : undefined,
             ]}
             onPress={() => {
               if (selectedIndex === data.length - 1) {
@@ -119,7 +133,11 @@ const ModalView = ({appConfig, visible, setVisible}) => {
                 carouselRef?.current?.next?.();
               }
             }}>
-            <Text style={[styles.buttonText, {color: buttonTextColor}]}>
+            <Text
+              style={[
+                styles.buttonText,
+                buttonTextColor ? {color: buttonTextColor} : undefined,
+              ]}>
               {carouselRef.current?.getCurrentIndex?.() === data.length - 1
                 ? 'Done'
                 : 'Continue'}
@@ -136,6 +154,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 20,
+    backgroundColor: 'white',
   },
   header: {
     display: 'flex',
