@@ -7,6 +7,10 @@ import ModalView from './ModalView';
 const InAppGuide = props => {
   const {appConfig} = useConfigService();
 
+  if (!appConfig?.inAppGuide?.in_app_guides?.length) {
+    return null;
+  }
+
   // console.log('=>>>> app: ', appConfig);
 
   return (
