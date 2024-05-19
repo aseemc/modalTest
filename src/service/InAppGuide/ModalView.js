@@ -21,32 +21,38 @@ const ModalView = ({appConfig, visible, setVisible}) => {
   const carouselRef = useRef();
   const width = Dimensions.get('window').width;
   const [selectedIndex, setSelectedIndex] = useState(0);
+  console.log('=>>>sfasdfasdfas: ', selectedIndex);
+
+  if (!appConfig?.inAppGuide) {
+    return null;
+  }
+
   const {
     inAppGuide: {
-      data,
-      backgroundColor,
-      titleColor,
-      descriptionColor,
-      buttonBackgroundColor,
-      buttonTextColor,
-      paginationActiveColor,
-      paginationInactiveColor,
+      in_app_guides,
+      background_color,
+      title_color,
+      description_color,
+      button_background_color,
+      button_text_color,
+      pagination_active_color,
+      pagination_inactive_color,
     },
   } = appConfig;
 
-  console.log('=>>>sfasdfasdfas: ', selectedIndex);
-
-  const renderItem = ({item: {title, image, body}}) => (
+  const renderItem = ({item: {title, image, description}}) => (
     <View
       style={[
         styles.centeredView,
         {
           paddingTop: insets.top + 20,
-          ...(backgroundColor ? {backgroundColor} : undefined),
+          ...(background_color
+            ? {backgroundColor: background_color}
+            : undefined),
         },
       ]}>
       <View style={styles.header}>
-        <Text style={[styles.headerText, {color: titleColor}]}>{title}</Text>
+        <Text style={[styles.headerText, {color: title_color}]}>{title}</Text>
       </View>
       <View style={{height: 12}} />
       <Image
@@ -56,8 +62,8 @@ const ModalView = ({appConfig, visible, setVisible}) => {
       />
       <View style={{height: 12}} />
       <ScrollView>
-        <Text style={[styles.description, {color: descriptionColor}]}>
-          {body}
+        <Text style={[styles.description, {color: description_color}]}>
+          {description}
         </Text>
       </ScrollView>
       <View style={{height: 12}} />
@@ -71,35 +77,37 @@ const ModalView = ({appConfig, visible, setVisible}) => {
           styles.centeredView,
           {
             paddingBottom: insets.bottom || 12,
-            ...(backgroundColor ? {backgroundColor} : undefined),
+            ...(background_color
+              ? {backgroundColor: background_color}
+              : 'undefined'),
           },
         ]}>
         <Carousel
           ref={carouselRef}
           loop={false}
           width={width}
-          data={data}
+          data={in_app_guides}
           onSnapToItem={setSelectedIndex}
           renderItem={renderItem}
         />
         <View
           style={[
             styles.paginationContainer,
-            backgroundColor ? {backgroundColor} : undefined,
+            background_color ? {backgroundColor: background_color} : undefined,
           ]}>
           <AnimatedDotsCarousel
-            length={data.length}
+            length={in_app_guides.length}
             currentIndex={selectedIndex}
             maxIndicators={6}
             interpolateOpacityAndColor={true}
             activeIndicatorConfig={{
-              color: paginationActiveColor,
+              color: pagination_active_color,
               margin: 3,
               opacity: 1,
               size: 8,
             }}
             inactiveIndicatorConfig={{
-              color: paginationInactiveColor,
+              color: pagination_inactive_color,
               margin: 3,
               opacity: 0.5,
               size: 8,
@@ -121,12 +129,12 @@ const ModalView = ({appConfig, visible, setVisible}) => {
           <Button
             containerStyle={[
               styles.button,
-              buttonBackgroundColor
-                ? {backgroundColor: buttonBackgroundColor}
+              button_background_color
+                ? {backgroundColor: button_background_color}
                 : undefined,
             ]}
             onPress={() => {
-              if (selectedIndex === data.length - 1) {
+              if (selectedIndex === in_app_guides.length - 1) {
                 setSelectedIndex(0);
                 setVisible(!visible);
               } else {
@@ -136,11 +144,9 @@ const ModalView = ({appConfig, visible, setVisible}) => {
             <Text
               style={[
                 styles.buttonText,
-                buttonTextColor ? {color: buttonTextColor} : undefined,
+                button_text_color ? {color: button_text_color} : undefined,
               ]}>
-              {carouselRef.current?.getCurrentIndex?.() === data.length - 1
-                ? 'Done'
-                : 'Continue'}
+              {selectedIndex === in_app_guides.length - 1 ? 'Done' : 'Continue'}
             </Text>
           </Button>
         </View>
